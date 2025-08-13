@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  backend:
+    name: Backend (Go) checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |-
+            ~/.cache/go-build
+            ${{ github.workspace }}/backend/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+      - name: "Backend: lint & build (template)"
+        run: |
+          echo "Run backend linters and build here (per backend/README.md)"
+
+  frontend:
+    name: Frontend (Node) checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: "Frontend: install & build (template)"
+        run: |
+          echo "Run frontend install/build/lint here (per frontend/README.md)"
